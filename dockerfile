@@ -4,7 +4,7 @@ LABEL maintainer="Relk Li <zxc140zxc140@gmail.com>"
 WORKDIR /app
 ENV FLASK_APP=autoapp.py
 ENV FLASK_DEBUG=1
-COPY flask-realworld-example-app /app
+COPY . /app
 RUN pip install -r requirements/dev.txt
 ENTRYPOINT ["flask"]
 CMD ["test"]
