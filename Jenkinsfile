@@ -1,18 +1,10 @@
 pipeline {
   agent none
   stages {
-    stage('Unit Test') {
-      agent {
-        docker {
-          image 'python:3.7'
-        }
-
-      }
+    stage('Test') {
       steps {
-        sh '''pip install -r requirements/dev.txt
-
-'''
-        sh 'flask test'
+        sh 'docker build -t flask-realworld-example-app:UnitTest .'
+        sh 'docker run flask-realworld-example-app:UnitTest'
       }
     }
 
