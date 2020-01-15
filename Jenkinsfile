@@ -8,5 +8,11 @@ pipeline {
       }
     }
 
+    stage('Build') {
+      steps {
+        sh 'docker build -t flask-realworld-example-app:latest .'
+      }
+    }
+
   }
 }
