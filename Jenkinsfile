@@ -24,7 +24,7 @@ pipeline {
         }
     }
     stage('Deploy_To_Production') {
-        when { tag "*" }
+        // when { tag "*" }
         steps {
             echo 'Deploying only because this commit is tagged...'
             sh 'docker tag downager/flask-realworld-example-app:$GIT_COMMIT'
