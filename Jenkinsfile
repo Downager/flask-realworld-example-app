@@ -8,9 +8,13 @@ pipeline {
       }
     }
 
-    stage('Build') {
+    stage('Build and Push') {
       steps {
-        sh 'docker build -t flask-realworld-example-app:latest .'
+        sh '''
+docker login
+-u downager -p Password
+docker build -t downager/flask-realworld-example-app:latest .
+docker push downager/flask-realworld-example-app:latest'''
       }
     }
 
