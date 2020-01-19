@@ -31,10 +31,9 @@ pipeline {
       }
       steps {
         echo 'Deploying only because this commit is tagged...'
-        sh 'docker tag downager/flask-realworld-example-app:$GIT_COMMIT'
-        sh 'printenv'
+        sh 'docker tag downager/flask-realworld-example-app:$GIT_COMMIT downager/flask-realworld-example-app:$TAG_NAME'
+        sh 'docker push downager/flask-realworld-example-app:$TAG_NAM'
       }
     }
-
   }
 }
