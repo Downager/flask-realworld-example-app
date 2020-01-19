@@ -35,5 +35,6 @@ pipeline {
         sh 'docker push downager/flask-realworld-example-app:$TAG_NAME'
       }
     }
+
   }
 }
