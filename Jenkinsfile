@@ -10,12 +10,12 @@ pipeline {
 
     stage('Build') {
       environment {
-        DOCKER_HUB_CREDS = 'credentials(\'dockerhub-downager\')'
+        DOCKER_HUB_CREDS = credentials('dockerhub-downager')
       }
       steps {
-        sh '''
-docker login
--u $DOCKER_HUB_CRED_USR -p $DOCKER_HUB_CRED_PSW'''
+        sh 'docker login -u $DOCKER_HUB_CRED_USR -p $DOCKER_HUB_CRED_PSW'
+        sh 'docker build -t downager/flask-realworld-example-app:latest .'
+        sh 'docker push downager/flask-realworld-example-app:latest'
       }
     }
 
