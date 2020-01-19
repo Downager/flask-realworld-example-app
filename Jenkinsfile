@@ -18,17 +18,22 @@ pipeline {
         sh 'docker push downager/flask-realworld-example-app:$GIT_COMMIT'
       }
     }
-    stage('Deploy_To_Stagging') {
-        steps {
-            echo 'Deploy to stagging environment "flask-realworld-example-app:$GIT_COMMIT"'
-        }
+
+    stage('Deploy - Stagging') {
+      steps {
+        echo 'Deploy to stagging environment "flask-realworld-example-app:$GIT_COMMIT"'
+      }
     }
-    stage('Deploy_To_Production') {
-        when { tag "*" }
-        steps {
-            echo 'Deploying only because this commit is tagged...'
-            sh 'docker tag downager/flask-realworld-example-app:$GIT_COMMIT'
-        }
+
+    stage('Deploy - Production') {
+      when {
+        tag '*'
+      }
+      steps {
+        echo 'Deploying only because this commit is tagged...'
+        sh 'docker tag downager/flask-realworld-example-app:$GIT_COMMIT'
+      }
     }
+
   }
 }
