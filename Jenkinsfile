@@ -22,6 +22,7 @@ pipeline {
     stage('Deploy - Stagging') {
       steps {
         echo 'Deploy to stagging environment flask-realworld-example-app:$GIT_COMMIT'
+        echo 'Test Trigger'
       }
     }
 
