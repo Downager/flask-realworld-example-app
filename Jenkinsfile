@@ -25,14 +25,12 @@ pipeline {
         HOST_GROUP = 'Stagging'
       }
       steps {
-        dir(path: 'ansible') {
-          ansiColor(colorMapName: 'xterm') {
-            ansiblePlaybook(
-              credentialsId: 'devops-ssh-key',
-              playbook: 'playbook-deploy-flask-app.yml',
-              inventory: 'hosts',
-              colorized: true)
-          }
+        ansiColor(colorMapName: 'xterm') {
+          ansiblePlaybook(
+            credentialsId: 'devops-ssh-key',
+            playbook: 'ansible/playbook-deploy-flask-app.yml',
+            inventory: 'ansible/hosts',
+            colorized: true)
         }
       }
     }
