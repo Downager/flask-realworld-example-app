@@ -23,6 +23,7 @@ pipeline {
     stage('Deploy - Stagging') {
       environment {
         HOST_GROUP = 'Stagging'
+        IMAGE_TAG = $GIT_COMMIT
       }
       steps {
         ansiColor(colorMapName: 'xterm') {
@@ -41,7 +42,8 @@ pipeline {
         tag '*'
       }
       environment {
-        HOST_GROUP = 'Production'
+        HOST_GROUP = 'Stagging'
+        IMAGE_TAG = $TAG_NAME
       }
       steps {
         echo 'Deploying only because this commit is tagged...'
