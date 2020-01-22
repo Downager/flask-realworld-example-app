@@ -8,4 +8,4 @@ COPY . /app
 RUN pip install -r requirements.txt
 EXPOSE 80
 ENTRYPOINT ["flask"]
-CMD ["flask run", "--with-threads"]
+CMD ["run", "--with-threads"]
