@@ -27,7 +27,7 @@ pipeline {
       steps {
         ansiColor(colorMapName: 'xterm') {
           ansiblePlaybook(
-            disableHostKeyChecking: true
+            disableHostKeyChecking: true,
             credentialsId: 'devops-ssh-key',
             playbook: 'ansible/playbook-deploy-flask-app.yml',
             inventory: 'ansible/hosts',
