@@ -4,7 +4,7 @@ services:
     container_name: flask-realworld-example-app
     image: downager/flask-realworld-example-app:${TAG}
     environment: 
-      - DATABASE_URL=postgresql://db/flask-app
+      - DATABASE_URL=postgresql://root:P@ssw0rd@db/flask-app
     ports:
       - 8080:80
     restart: always
