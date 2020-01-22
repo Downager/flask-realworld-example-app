@@ -23,6 +23,12 @@
         src: docker-compose.yaml
         dest: /opt/flask-realworld-example-app
 
+    - name: Create .env file
+      copy:
+        dest: /opt/flask-realworld-example-app/.env
+        content: |
+          TAG="{{ lookup('env','$TAG_NAME') }}"
+
     - name: Log into DockerHub
       docker_login:
         username: "{{ lookup('env','DOCKER_HUB_CREDS_USR') }}"
