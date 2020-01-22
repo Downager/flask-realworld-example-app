@@ -32,6 +32,8 @@ pipeline {
               playbook: 'playbook-deploy-flask-app.yml',
               inventory: 'hosts',
               colorized: true)
+          }
+        }
       }
     }
 
@@ -48,6 +50,5 @@ pipeline {
         sh 'docker push downager/flask-realworld-example-app:$TAG_NAME'
       }
     }
-
   }
 }
