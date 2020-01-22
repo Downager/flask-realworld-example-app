@@ -1,0 +1,42 @@
+- hosts: "{{ lookup('env','HOST_GROUP') }}"
+  remote_user: devops
+  tasks:
+    - name: Change ownership of /opt directory
+      file:
+        path: /opt
+        state: directory
+        owner: devops
+        group: devops
+        mode: "0775"
+      become: yes
+    
+    - name: Create flask-realworld-example-app directory
+      file:
+        path: /opt/flask-realworld-example-app
+        state: directory
+        owner: devops
+        group: devops
+        mode: "0775"
+
+    - name: Copy docker-compose file
+      copy:
+        src: docker-compose.yaml
+        dest: /opt/flask-realworld-example-app
+
+    - name: Log into DockerHub
+      docker_login:
+        username: "{{ lookup('env','DOCKER_HUB_CREDS_USR') }}"
+        password: "{{ lookup('env','DOCKER_HUB_CREDS_PSW') }}"
+
+    - name: docker-compose down 'flask-realworld-example-app'
+      docker_compose:
+        project_src: /opt/flask-realworld-example-app
+        state: absent
+      register: output
+
+    - name: docker-compose up 'flask-realworld-example-app'
+      docker_compose:
+        project_src: /opt/flask-realworld-example-app
+        state: present
+        pull: yes
+      register: output
