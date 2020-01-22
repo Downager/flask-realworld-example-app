@@ -16,6 +16,7 @@ pipeline {
         sh 'docker login -u $DOCKER_HUB_CREDS_USR -p $DOCKER_HUB_CREDS_PSW'
         sh 'docker build -t downager/flask-realworld-example-app:$GIT_COMMIT .'
         sh 'docker push downager/flask-realworld-example-app:$GIT_COMMIT'
+        sh 'docker system prune -f'
       }
     }
 
