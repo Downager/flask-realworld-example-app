@@ -27,7 +27,7 @@
       copy:
         dest: /opt/flask-realworld-example-app/.env
         content: |
-          TAG="{{ lookup('env','$IMAGE_TAG') }}"
+          TAG="{{ lookup('env','IMAGE_TAG') }}"
 
     - name: Log into DockerHub
       docker_login:
