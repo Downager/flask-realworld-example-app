@@ -23,9 +23,10 @@ pipeline {
     stage('Deploy - Stagging') {
       environment {
         HOST_GROUP = 'Stagging'
-        IMAGE_TAG = $GIT_COMMIT
+
       }
       steps {
+        sh 'export IMAGE_TAG=$GIT_COMMIT'
         ansiColor(colorMapName: 'xterm') {
           ansiblePlaybook(
             disableHostKeyChecking: true,
@@ -43,9 +44,9 @@ pipeline {
       }
       environment {
         HOST_GROUP = 'Stagging'
-        IMAGE_TAG = $TAG_NAME
       }
       steps {
+        sh 'export IMAGE_TAG=$TAG_NAME'
         echo 'Deploying only because this commit is tagged...'
         sh 'docker tag downager/flask-realworld-example-app:$GIT_COMMIT downager/flask-realworld-example-app:$TAG_NAME'
         sh 'docker push downager/flask-realworld-example-app:$TAG_NAME'
