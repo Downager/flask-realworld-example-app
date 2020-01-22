@@ -26,4 +26,7 @@ services:
 networks: 
   web:
     driver: bridge
+volumes:
+  pgdata:
+    driver: local
     
