@@ -2,6 +2,7 @@ pipeline {
   agent any
   environment {
     DOCKER_HUB_CREDS = credentials('dockerhub-downager')
+    DB_MIGRATION = false
   }
   stages {
     stage('Test') {
