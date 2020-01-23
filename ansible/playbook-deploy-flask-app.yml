@@ -48,4 +48,4 @@
       register: output
 
     - name: DB migrate - flask-realworld-example-app 
-      command: docker exec flask-realworld-example-app bash -c 'flask db init && flask db migrate && flask db upgrade'
+      command: docker exec flask-realworld-example-app bash -c './db_migrate.sh'

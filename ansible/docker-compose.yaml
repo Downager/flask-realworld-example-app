@@ -5,6 +5,8 @@ services:
     image: downager/flask-realworld-example-app:${TAG}
     environment: 
       - DATABASE_URL=postgresql://postgres:P@ssw0rd@db/flask-app
+    volumes:
+      - ./app/migrations:/app/migrations
     ports:
       - 8080:80
     restart: always
