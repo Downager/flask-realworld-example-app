@@ -8,8 +8,4 @@ COPY . /app
 RUN pip install -r requirements.txt
 EXPOSE 80
 ENTRYPOINT ["gunicorn"]
-<<<<<<< HEAD
 CMD ["autoapp:app", "-b" ,"0.0.0.0:80", "-w", "3"]
-=======
-CMD ["autoapp:app", "-b", "0.0.0.0:80", "-w", "3"]
->>>>>>> change dockerfile to gunicorn
