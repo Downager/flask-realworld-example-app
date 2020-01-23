@@ -1,5 +1,7 @@
 - hosts: "{{ lookup('env','HOST_GROUP') }}"
   remote_user: devops
+  vars:
+    DB_MIGRATION: "{{ lookup('env','DB_MIGRATION') }}"
   tasks:
     - name: Change ownership of /opt directory
       file:
@@ -49,4 +51,4 @@
 
     - name: DB migrate - flask-realworld-example-app 
       command: docker exec flask-realworld-example-app bash -c './db_migrate.sh'
-      when: {{ lookup('env','DB_MIGRATION') }} == true
+      when: DB_MIGRATION == true
