@@ -1,22 +1,22 @@
 - hosts: "{{ lookup('env','HOST_GROUP') }}"
   remote_user: devops
   vars:
-    HOSTNAME: "http://localhost:8080"
+    HOST_NAME: "http://localhost:8080"
   tasks:
     - name: GET '/api/user'
       uri:
-        url: ${HOSTNAME}/api/user
+        url: "{{ HOST_NAME }}/api/user"
         method: GET
         status_code: 200
 
     - name: GET '/api/tags'
       uri:
-        url: ${HOSTNAME}/api/tags
+        url: "{{ HOST_NAME }}/api/tags"
         method: GET
         status_code: 200
 
     - name: GET '/api/articles'
       uri:
-        url: ${HOSTNAME}/api/articles
+        url: "{{ HOST_NAME }}/api/articles"
         method: GET
         status_code: 200
