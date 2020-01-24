@@ -1,5 +1,10 @@
 pipeline {
   agent any
+  environment {
+    DOCKER_HUB_CREDS = credentials('dockerhub-downager')
+    FLASK_POSTGRES_CREDS = credentials('flask-app-postgres-user-pass')
+    DB_MIGRATION = false
+  }
   stages {
     stage('Test') {
       steps {
@@ -9,9 +14,6 @@ pipeline {
     }
 
     stage('Build') {
-      environment {
-        DOCKER_HUB_CREDS = credentials('dockerhub-downager')
-      }
       steps {
         sh 'docker login -u $DOCKER_HUB_CREDS_USR -p $DOCKER_HUB_CREDS_PSW'
         sh 'docker build -t downager/flask-realworld-example-app:$GIT_COMMIT .'
@@ -21,9 +23,19 @@ pipeline {
     }
 
     stage('Deploy - Stagging') {
+      environment {
+        HOST_GROUP = 'Stagging'
+        IMAGE_TAG = sh(returnStdout: true, script: 'echo $GIT_COMMIT')
+      }
       steps {
-        echo 'Deploy to stagging environment flask-realworld-example-app:$GIT_COMMIT'
-        echo 'test PR auto build'
+        ansiColor(colorMapName: 'xterm') {
+          ansiblePlaybook(
+            disableHostKeyChecking: true,
+            credentialsId: 'devops-ssh-key',
+            playbook: 'ansible/playbook-deploy-flask-app.yml',
+            inventory: 'ansible/hosts',
+            colorized: true)
+        }
       }
     }
 
@@ -31,12 +43,15 @@ pipeline {
       when {
         tag '*'
       }
+      environment {
+        HOST_GROUP = 'Stagging'
+        IMAGE_TAG = sh(returnStdout: true, script: 'echo $TAG_NAME')
+      }
       steps {
         echo 'Deploying only because this commit is tagged...'
         sh 'docker tag downager/flask-realworld-example-app:$GIT_COMMIT downager/flask-realworld-example-app:$TAG_NAME'
         sh 'docker push downager/flask-realworld-example-app:$TAG_NAME'
       }
     }
-
   }
 }

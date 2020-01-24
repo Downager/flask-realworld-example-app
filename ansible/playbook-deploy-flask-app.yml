@@ -1,0 +1,56 @@
+- hosts: "{{ lookup('env','HOST_GROUP') }}"
+  remote_user: devops
+  vars:
+    DB_MIGRATION: "{{ lookup('env','DB_MIGRATION') }}"
+  tasks:
+    - name: Change ownership of /opt directory
+      file:
+        path: /opt
+        state: directory
+        owner: devops
+        group: devops
+        mode: "0775"
+      become: yes
+    
+    - name: Create flask-realworld-example-app directory
+      file:
+        path: /opt/flask-realworld-example-app
+        state: directory
+        owner: devops
+        group: devops
+        mode: "0775"
+
+    - name: Copy docker-compose file
+      copy:
+        src: docker-compose.yaml
+        dest: /opt/flask-realworld-example-app
+
+    - name: Create .env file
+      copy:
+        dest: /opt/flask-realworld-example-app/.env
+        content: |
+          TAG={{ lookup('env','IMAGE_TAG') }}
+          POSTGRES_USER={{ lookup('env','FLASK_POSTGRES_CREDS_USR') }}
+          POSTGRES_PASSWORD={{ lookup('env','FLASK_POSTGRES_CREDS_PSW') }}
+
+    - name: Log into DockerHub
+      docker_login:
+        username: "{{ lookup('env','DOCKER_HUB_CREDS_USR') }}"
+        password: "{{ lookup('env','DOCKER_HUB_CREDS_PSW') }}"
+
+    - name: docker-compose down 'flask-realworld-example-app'
+      docker_compose:
+        project_src: /opt/flask-realworld-example-app
+        state: absent
+      register: output
+
+    - name: docker-compose up 'flask-realworld-example-app'
+      docker_compose:
+        project_src: /opt/flask-realworld-example-app
+        state: present
+        pull: yes
+      register: output
+
+    - name: DB migrate - flask-realworld-example-app 
+      command: docker exec flask-realworld-example-app bash -c './db_migrate.sh'
+      when: DB_MIGRATION == true

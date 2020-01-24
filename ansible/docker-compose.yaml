@@ -1,0 +1,35 @@
+version: '3'
+services:
+  web:
+    container_name: flask-realworld-example-app
+    image: downager/flask-realworld-example-app:${TAG}
+    environment: 
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/flask-app
+    volumes:
+      - ./app/migrations:/app/migrations
+    ports:
+      - 8080:80
+    restart: always
+    networks: 
+      - web
+  db:
+    container_name: postgres
+    image: postgres:12.1
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
+      - POSTGRES_DB=flask-app
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432  
+    restart: always
+    networks: 
+      - web
+networks: 
+  web:
+    driver: bridge
+volumes:
+  pgdata:
+    driver: local
+    
