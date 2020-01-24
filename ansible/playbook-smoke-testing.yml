@@ -3,12 +3,6 @@
   vars:
     HOST_NAME: "http://localhost:8080"
   tasks:
-    - name: GET '/api/user'
-      uri:
-        url: "{{ HOST_NAME }}/api/user"
-        method: GET
-        status_code: 200
-
     - name: GET '/api/tags'
       uri:
         url: "{{ HOST_NAME }}/api/tags"
