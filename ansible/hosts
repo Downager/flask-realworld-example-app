@@ -1,7 +1,7 @@
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 
-[Stagging]
+[Staging]
 ec2-18-176-221-157.ap-northeast-1.compute.amazonaws.com
 [Production]
-
+ec2-18-176-221-157.ap-northeast-1.compute.amazonaws.com
