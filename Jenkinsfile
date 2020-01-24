@@ -55,13 +55,33 @@ pipeline {
         tag '*'
       }
       environment {
-        HOST_GROUP = 'Stagging'
+        HOST_GROUP = 'Production'
         IMAGE_TAG = sh(returnStdout: true, script: 'echo $TAG_NAME')
       }
       steps {
-        echo 'Deploying only because this commit is tagged...'
+        echo 'Deploying only because this commit is tagged'
         sh 'docker tag downager/flask-realworld-example-app:$GIT_COMMIT downager/flask-realworld-example-app:$TAG_NAME'
         sh 'docker push downager/flask-realworld-example-app:$TAG_NAME'
+        echo 'Deploy to production servers'
+        ansiColor(colorMapName: 'xterm') {
+          ansiblePlaybook(
+            disableHostKeyChecking: true,
+            credentialsId: 'devops-ssh-key',
+            playbook: 'ansible/playbook-deploy-flask-app.yml',
+            inventory: 'ansible/hosts',
+            colorized: true)
+        }
+        echo 'Make a smoke testing on production servers (MAX_RETRIES = 3)'
+        retry(3) {
+          ansiColor(colorMapName: 'xterm') {
+            ansiblePlaybook(
+              disableHostKeyChecking: true,
+              credentialsId: 'devops-ssh-key',
+              playbook: 'ansible/playbook-smoke-testing.yml',
+              inventory: 'ansible/hosts',
+              colorized: true)
+          }
+        }
       }
     }
   }
