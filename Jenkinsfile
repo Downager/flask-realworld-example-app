@@ -2,6 +2,7 @@ pipeline {
   agent any
   environment {
     DOCKER_HUB_CREDS = credentials('dockerhub-downager')
+    FLASK_POSTGRES_CREDS = credentials('flask-app-postgres-user-pass')
     DB_MIGRATION = false
   }
   stages {

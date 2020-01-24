@@ -30,6 +30,8 @@
         dest: /opt/flask-realworld-example-app/.env
         content: |
           TAG={{ lookup('env','IMAGE_TAG') }}
+          POSTGRES_USER={{ lookup('env','FLASK_POSTGRES_CREDS_USR') }}
+          POSTGRES_PASSWORD={{ lookup('env','FLASK_POSTGRES_CREDS_PSW') }}
 
     - name: Log into DockerHub
       docker_login:
