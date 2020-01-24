@@ -1,0 +1,20 @@
+- hosts: "{{ lookup('env','HOST_GROUP') }}"
+  remote_user: devops
+  tasks:
+    - name: GET '/api/user'
+      uri:
+        url: http://localhost/api/user
+        method: GET
+        status_code: 200
+
+    - name: GET '/api/tags'
+      uri:
+        url: http://localhost/api/tags
+        method: GET
+        status_code: 200
+
+    - name: GET '/api/articles'
+      uri:
+        url: http://localhost/api/articles
+        method: GET
+        status_code: 200

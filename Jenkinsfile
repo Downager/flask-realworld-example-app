@@ -36,9 +36,18 @@ pipeline {
             inventory: 'ansible/hosts',
             colorized: true)
         }
+        retry(3) {
+          ansiColor(colorMapName: 'xterm') {
+            ansiblePlaybook(
+              disableHostKeyChecking: true,
+              credentialsId: 'devops-ssh-key',
+              playbook: 'ansible/playbook-smoke-testing.yml',
+              inventory: 'ansible/hosts',
+              colorized: true)
+          }
+        }
       }
     }
-
     stage('Deploy - Production') {
       when {
         tag '*'
