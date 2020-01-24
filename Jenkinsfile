@@ -22,12 +22,13 @@ pipeline {
       }
     }
 
-    stage('Deploy - Stagging') {
+    stage('Deploy - Staging') {
       environment {
-        HOST_GROUP = 'Stagging'
+        HOST_GROUP = 'Staging'
         IMAGE_TAG = sh(returnStdout: true, script: 'echo $GIT_COMMIT')
       }
       steps {
+        echo 'Deploy to staging servers'
         ansiColor(colorMapName: 'xterm') {
           ansiblePlaybook(
             disableHostKeyChecking: true,
@@ -36,6 +37,7 @@ pipeline {
             inventory: 'ansible/hosts',
             colorized: true)
         }
+        echo 'Make a smoke testing on staging servers (MAX_RETRIES = 3)'
         retry(3) {
           ansiColor(colorMapName: 'xterm') {
             ansiblePlaybook(
